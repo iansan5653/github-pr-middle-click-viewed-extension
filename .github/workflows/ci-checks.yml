@@ -4,6 +4,7 @@ on:
   push:
     branches: main
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,8 +19,8 @@ jobs:
       - run: npm ci
       - run: npm run check
 
-  upload-preview-artifact:
-    name: Upload preview artifact
+  build-package:
+    name: Build extension package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +30,11 @@ jobs:
       - name: Build package
         run: npm run package
 
+      # Upload the unzipped extension so the downloaded artifact is not a zip inside a zip
+      - name: Extract package
+        run: unzip ./web-ext-artifacts/*.zip -d ./web-ext-artifacts/unpacked
+
       - uses: actions/upload-artifact@v4
         with:
-          name: extension-preview-package
-          path: ./web-ext-artifacts/middle-click_to_mark_viewed_for_github_prs-0.0.0.zip
+          name: github-pr-middle-click-viewed-extension
+          path: ./web-ext-artifacts/unpacked/
