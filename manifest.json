@@ -1,0 +1,29 @@
+{
+  "name": "Middle-Click to Mark Viewed for GitHub PRs",
+  "description": "Mark files in GitHub pull requests as viewed by middle-clicking anywhere in the file.",
+  "manifest_version": 3,
+  "version": "0.0.0",
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["dist/content-script.js"]
+    }
+  ],
+  "icons": {
+    "128": "assets/icon-128.png"
+  },
+  "homepage_url": "https://github.com/iansan5653/github-pr-middle-click-viewed-extension",
+  "minimum_chrome_version": "109",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "github-pr-middle-click-viewed@iansan5653",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  }
+}

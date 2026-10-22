@@ -1,0 +1,40 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-code:
+    name: Check code quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run check
+
+  build-package:
+    name: Build extension package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+
+      - name: Build package
+        run: npm run package
+
+      # Upload the unzipped extension so the downloaded artifact is not a zip inside a zip
+      - name: Extract package
+        run: unzip ./web-ext-artifacts/*.zip -d ./web-ext-artifacts/unpacked
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: github-pr-middle-click-viewed-extension
+          path: ./web-ext-artifacts/unpacked/
