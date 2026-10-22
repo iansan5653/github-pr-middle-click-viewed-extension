@@ -1,0 +1,25 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --watch",
+    "format": "prettier --write src/*",
+    "check:formatting": "prettier --check src/*",
+    "check:types": "tsc --noEmit",
+    "check:addon": "npm run build && web-ext lint --ignore-files node_modules tsconfig.json webpack.config.js",
+    "check": "npm run check:formatting && npm run check:types && npm run check:addon",
+    "package": "npm run build && web-ext build --ignore-files .* node_modules web-ext-artifacts src \"assets/!(icon*)\" *config* package* --overwrite-dest",
+    "start:firefox": "web-ext run"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^8.0.7",
+    "@babel/preset-typescript": "^8.0.7",
+    "babel-loader": "^10.1.1",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2",
+    "web-ext": "^10.8.0",
+    "webpack": "^5.112.0",
+    "webpack-cli": "^7.2.3"
+  }
+}

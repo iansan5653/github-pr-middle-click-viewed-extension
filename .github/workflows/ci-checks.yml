@@ -1,0 +1,32 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: main
+  pull_request:
+
+jobs:
+  check-code:
+    name: Check code quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run check
+
+  upload-preview-artifact:
+    name: Upload preview artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+
+      - name: Build package
+        run: npm run package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-preview-package
+          path: ./web-ext-artifacts/middle-click_to_mark_viewed_for_github_prs-0.0.0.zip
